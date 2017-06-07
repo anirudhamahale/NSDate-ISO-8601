@@ -7,22 +7,32 @@
 
 import Foundation
 
-public extension NSDate {
-    public class func ISOStringFromDate(date: NSDate) -> String {
-        var dateFormatter = NSDateFormatter()
-        dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
-        dateFormatter.timeZone = NSTimeZone(abbreviation: "GMT")
+public extension Date {
+    public static func ISOStringFromDate(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX") as Locale!
+        dateFormatter.timeZone = NSTimeZone(abbreviation: "GMT")! as TimeZone
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
         
-        return dateFormatter.stringFromDate(date).stringByAppendingString("Z")
+        return dateFormatter.string(from: date).appending("Z")
     }
     
-    public class func dateFromISOString(string: String) -> NSDate {
-        var dateFormatter = NSDateFormatter()
-        dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
-        dateFormatter.timeZone = NSTimeZone.localTimeZone()
+    public static func ISOStringOfCurrentDate() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX") as Locale!
+        dateFormatter.timeZone = NSTimeZone(abbreviation: "GMT")! as TimeZone
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+        
+        return dateFormatter.string(from: self.init()).appending("Z")
+    }
+    
+    
+    public static func dateFromISOString(string: String) -> NSDate {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX") as Locale!
+        dateFormatter.timeZone = NSTimeZone.local
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         
-        return dateFormatter.dateFromString(string)
+        return dateFormatter.date(from: string)! as NSDate
     }
 }
